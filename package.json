@@ -1,14 +1,36 @@
 {
   "name": "instgram-scrape-by-tag",
   "version": "0.0.1",
+  "description": "NodeJS application for scraping posts from Instagram by hashtag without API access.",
+  "main": "app.js",
+  "author": "Arsalan Bilal <mabc224@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/mabc224/instagram-hashtag-scraper/blob/master/README.md",
   "private": true,
   "scripts": {
     "start": "node ./app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mabc224/instagram-hashtag-scraper"
+  },
+  "bugs": {
+		"url": "https://github.com/mabc224/instagram-hashtag-scraper/issues"
+	},
+  "engines": {
+    "node": "7.6.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "lodash": "^4.17.5"
-  }
+  },
+  "keywords": [
+		"instagram",
+		"scraper",
+		"public",
+    "api",
+    "tag"
+	]
 }

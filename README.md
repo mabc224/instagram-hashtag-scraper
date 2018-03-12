@@ -68,6 +68,9 @@ npm start
 ```
 
 
+`instagram-hashtag-scraper` uses Async/Await. In order to use it as intended, you need atleast Node v7.6.
+
+
 ### External References and Resources
 
 * [Instagram](https://www.instagram.com)
