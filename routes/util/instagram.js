@@ -4,10 +4,10 @@ const defaults = require('./../../config/defaults');
 const _limit = defaults.INSTAGRAM_DEFAULT_FIRST;
 const topParser = require('./post-parser');
 
-module.exports = async function (_hashtag) {
+module.exports = async function(_hashtag) {
     console.log('running instagram for tag ' + _hashtag)
     try {
-        var response = await Axios({
+        let response = await Axios({
             baseURL: defaults.URL_INSTAGRAM_EXPLORE_TAGS,
             url: '/' + _hashtag,
             method: 'get',
@@ -19,16 +19,16 @@ module.exports = async function (_hashtag) {
         });
         if (typeof _response === 'string') {
             if (_response.includes("Page Not Found")) {
-                return {err: 'Page Not Found'};
+                return { err: 'Page Not Found' };
             } else {
-                return {err: _response};
+                return { err: _response };
             }
         } else {
-            var posts = await topParser(response);
+            let posts = await topParser(response);
 
             while (posts.length < _limit) {
-                var has_next_page = response.data.graphql.hashtag.edge_hashtag_to_media.page_info.has_next_page;
-                var end_cursor = response.data.graphql.hashtag.edge_hashtag_to_media.page_info.end_cursor;
+                let has_next_page = response.data.graphql.hashtag.edge_hashtag_to_media.page_info.has_next_page;
+                let end_cursor = response.data.graphql.hashtag.edge_hashtag_to_media.page_info.end_cursor;
                 if (has_next_page) {
                     response = await Axios.get(defaults.URL_INSTAGRAM_EXPLORE_TAGS + _hashtag, {
                         params: {
@@ -36,35 +36,34 @@ module.exports = async function (_hashtag) {
                             max_id: end_cursor
                         }
                     });
-                    var morePosts = await topParser(response);
+                    let morePosts = await topParser(response);
                     posts = posts.concat(morePosts);
                 } else {
                     break;
                 }
-
             }
 
             if (posts.length > _limit) {
                 posts.splice(_limit, posts.length);
             }
-            var promises = [];
+            let promises = [];
 
             posts.forEach((d) => {
                 promises.push(Axios.get(d.post_url + '?__a=1'));
             });
 
-            var finalData = [];
-            var data = await Axios
+            let finalData = [];
+            let data = await Axios
                 .all(promises)
                 .then((results) => {
                     return results.map(r => {
-                        var data = r.data.graphql.shortcode_media;
-                        var ownerDetail = {
+                        let data = r.data.graphql.shortcode_media;
+                        let ownerDetail = {
                             profile_pic_url: data.owner.profile_pic_url,
                             username: data.owner.username,
                             full_name: data.owner.full_name
                         }
-                        return Object.assign({}, _.find(posts, {'id': data.id}), {owner: ownerDetail});
+                        return Object.assign({}, _.find(posts, { 'id': data.id }), { owner: ownerDetail });
                     });
                 });
             return data;
@@ -72,6 +71,6 @@ module.exports = async function (_hashtag) {
 
     } catch (error) {
         console.log("Error");
-        return {err: error.message};
+        return { err: error.message };
     }
 }
