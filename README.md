@@ -27,8 +27,12 @@ npm start
 ### Run Server
 
 * `http://localhost:3000`
+
+For top most posts
 * `http://localhost:3000/<tag>`
 
+For recent posts
+* `http://localhost:3000/<tag>?recent=1`
 
 ### Example response:
 
